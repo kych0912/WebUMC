@@ -10,8 +10,7 @@ export default function Login() {
     const emailError = errors.email;
     const passwordError = errors.password;
     const passwordCheckError = errors.passwordCheck;
-    console.log(errors)
-
+    
     const isDisabled = errors.email || errors.password || errors.passwordCheck;
     return (
         <Container>

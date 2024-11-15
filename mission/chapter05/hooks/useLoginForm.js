@@ -1,6 +1,8 @@
 import * as yup from "yup"
 import {yupResolver} from '@hookform/resolvers/yup'
 import {useForm} from 'react-hook-form'
+import { userLogin } from "../apis/auth"
+import { useNavigate } from "react-router-dom"
 
 const schema = yup.object().shape({
     email: yup.string().email().required('이메일을 반드시 입력해주세요.'),
@@ -8,6 +10,7 @@ const schema = yup.object().shape({
 })
 
 export const useLoginForm = () => {
+    const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors }, control } = useForm({
         resolver: yupResolver(schema),
         defaultValues: {
@@ -17,8 +20,15 @@ export const useLoginForm = () => {
         mode: 'onBlur',
     })
 
-    const onSubmit = (data) => {
-        console.log(data)
+    const onSubmit = async (data) => {
+        try {
+            const response = await userLogin(data);
+            if (response.status === 200) {
+                navigate('/');
+            }
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     return { register, handleSubmit, errors, onSubmit, control }

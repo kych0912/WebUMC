@@ -1,6 +1,8 @@
 import * as yup from "yup"
 import {yupResolver} from '@hookform/resolvers/yup'
 import {useForm} from 'react-hook-form'
+import { userRegister } from "../apis/auth"
+import { useNavigate } from "react-router-dom"
 
 const schema = yup.object().shape({
     email: yup.string().email().required('이메일을 반드시 입력해주세요.'),
@@ -19,8 +21,18 @@ export const useRegisterForm = () => {
         mode: 'onBlur',
     })
 
-    const onSubmit = (data) => {
-        console.log(data)
+    const onSubmit = async (data) => {
+        try {
+            const response = await userRegister(data);
+            localStorage.setItem('accessToken', response.data.accessToken);
+            localStorage.setItem('refreshToken', response.data.refreshToken);
+
+            if (response.status === 200) {
+                navigate('/login');
+            }
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     return { register, handleSubmit, errors, onSubmit, control }

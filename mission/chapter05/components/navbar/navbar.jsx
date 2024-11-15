@@ -7,9 +7,12 @@ import {
 import Button from "../button/button";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import LoggedIn from "./_components/LoggedIn"
+import NotLoggedIn from "./_components/NotLoggedIn"
 
 export default function Navbar() {
     const navigate = useNavigate();
+    const accessToken = localStorage.getItem('accessToken');
 
     return (
         <NavbarHeader>
@@ -20,14 +23,13 @@ export default function Navbar() {
                     </Link>
                 </Logo>
 
-                <RightContainer>
-                    <Button onClick={()=>{
-                        navigate("/login")
-                    }} color="black">로그인</Button>
-                    <Button onClick={()=>{
-                        navigate("/signup")
-                    }} color="red">회원가입</Button>
-                </RightContainer>
+                {
+                    accessToken ? (
+                        <LoggedIn />
+                    ) : (
+                        <NotLoggedIn/>
+                    )
+                }
             </NavbarContainer>
         </NavbarHeader>
     )

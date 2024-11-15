@@ -6,6 +6,14 @@ const MainContainer = styled.div`
     gap:8px;
 `
 
+const PostSkeleton = styled.div`
+    width: 200px;
+    height: 300px;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+`
+
 export {
-    MainContainer
+    MainContainer,
+    PostSkeleton
 }
